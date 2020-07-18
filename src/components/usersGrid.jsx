@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
   return {
     users: state.users,
     isLoading: state.isLoading,
+    filter: state.filter,
   };
 };
 
@@ -24,6 +25,10 @@ class usersGrid extends Component {
    * ID of the root element of the component. Used e.g. to track the scrolling
    */
   rootElementId = "userGrid";
+  /**
+   * Data structure containing the uesers after the filter has been applied.
+   */
+  fileredUsers = [];
   /**
    * Data structure containing the Users subdivided by row.
    */
@@ -40,7 +45,6 @@ class usersGrid extends Component {
   detectScrollToTheBottom = () => {
     const wrappedElement = document.getElementById(this.rootElementId);
     if (isBottomOfElementOnScreen(wrappedElement)) {
-      console.log(`${this.rootElementId} bottom reached`);
       if (this.props.users.length < CATALOG_SIZE) {
         loadNextBatch();
       }
@@ -48,16 +52,37 @@ class usersGrid extends Component {
   };
 
   /**
+   * Filter the users based on the given filter (if any).
+   */
+  filterUsers() {
+    // Verify whether a filter has been set.
+    if (!this.props.filter) {
+      // No filter is set, pass all the users through.
+      this.fileredUsers = this.props.users;
+      return;
+    }
+
+    this.fileredUsers = this.props.users.filter((user) => {
+      return (
+        user.name.first
+          .toLowerCase()
+          .includes(this.props.filter.toLowerCase()) ||
+        user.name.last.toLowerCase().includes(this.props.filter.toLowerCase())
+      );
+    });
+  }
+
+  /**
    * Split the users into rows whose length is according to the NUMBER_OF_COLUMNS value.
    */
   splitIntoRows() {
     this.rowsOfUsers = {};
-    for (let index = 0; index < this.props.users.length; index++) {
+    for (let index = 0; index < this.fileredUsers.length; index++) {
       let row = Math.floor(index / NUMBER_OF_COLUMNS);
       if (!this.rowsOfUsers[row]) {
-        this.rowsOfUsers[row] = [this.props.users[index]];
+        this.rowsOfUsers[row] = [this.fileredUsers[index]];
       } else {
-        this.rowsOfUsers[row].push(this.props.users[index]);
+        this.rowsOfUsers[row].push(this.fileredUsers[index]);
       }
     }
   }
@@ -75,16 +100,29 @@ class usersGrid extends Component {
   }
 
   renderGrid() {
+    this.filterUsers();
     this.splitIntoRows();
     return Object.keys(this.rowsOfUsers).map((r, index) =>
       this.renderRow(this.rowsOfUsers[r], index)
     );
   }
 
+  /**
+   * Renders a row of users.
+   * @param {users[]} users
+   * @param {number} rowKey
+   */
   renderRow(users, rowKey) {
-    return (
-      <div className="row" key={rowKey}>
-        {users.map((u, index) => (
+    const cells = [];
+
+    // Note: as we don't want the last row to have resized tiles
+    // we need to add empty cells to have a complete row.
+    // At the core the issue is that we're using col-sm and
+
+    for (let index = 0; index < NUMBER_OF_COLUMNS; index++) {
+      if (users[index]) {
+        let u = users[index];
+        cells.push(
           <div className="col-sm" key={index}>
             <UserGridCell
               picture={u.picture}
@@ -95,7 +133,15 @@ class usersGrid extends Component {
               email={u.email}
             />
           </div>
-        ))}
+        );
+      } else {
+        cells.push(<div className="col-sm" key={index} />);
+      }
+    }
+
+    return (
+      <div className="row" key={rowKey}>
+        {cells}
       </div>
     );
   }

@@ -26,6 +26,10 @@ const SET_IS_LOADING_OFF = "SET_IS_LOADING_OFF";
  * Identifier for the action which sets the latest error.
  */
 const SET_LATEST_ERROR = "SET_LATEST_ERROR";
+/**
+ * Identifier for the action which sets the filter.
+ */
+const SET_FILTER = "SET_FILTER";
 
 /**
  * Initial state of the global state.
@@ -51,6 +55,10 @@ const initialState = {
    * Most recent error message. If the latest request was successful it will be null.
    */
   latestError: null,
+  /**
+   * Filter applied to first + last name of the users.
+   */
+  filter: null,
 };
 
 /**
@@ -68,27 +76,31 @@ export function addToCache(batchOfUsers) {
 export function addFromCache(batchOfUsers) {
   return { type: MOVE_USERS_FROM_CACHE, payload: batchOfUsers };
 }
-
 /**
  * Action which sets the IsLoading flag to on.
  */
 export function setIsLoadingOn() {
   return { type: SET_IS_LOADING_ON };
 }
-
 /**
  * Action which sets the IsLoading flag to off.
  */
 export function setIsLoadingOff() {
   return { type: SET_IS_LOADING_OFF };
 }
-
 /**
  * Action which sets Latest Error message in the global state.
  * @param {string} errorMessage
  */
 export function setLatestError(errorMessage) {
   return { type: SET_LATEST_ERROR, payload: errorMessage };
+}
+/**
+ * Action which sets the filter for users first + last name.
+ * @param {string} filter
+ */
+export function setFilter(filter) {
+  return { type: SET_FILTER, payload: filter };
 }
 
 function rootReducer(state = initialState, action) {
@@ -118,6 +130,11 @@ function rootReducer(state = initialState, action) {
   if (action.type === SET_LATEST_ERROR) {
     return Object.assign({}, state, {
       latestError: action.payload,
+    });
+  }
+  if (action.type === SET_FILTER) {
+    return Object.assign({}, state, {
+      filter: action.payload,
     });
   }
 
