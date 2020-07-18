@@ -1,11 +1,19 @@
 // Where All Redux is
+// Note: outside the limited scope of this code challenge it might be not such a brillant idea
+// of putting everything in a single file. In this very case I'm mostly doing as an excuse for
+// making that Doom reference (ich war ein iddqd Kind....).
 import { createStore } from "redux";
-import { BATCH_SIZE } from "../Constants";
+import { BATCH_SIZE } from "../shared/Constants";
 
 /**
- * Identifier for the action which adds a batch of users to the global state.
+ * Identifier for the action which adds the a batch of users to the global state cache.
  */
-const ADD_USERS_BATCH = "ADD_USERS_BATCH";
+const ADD_BATCH_TO_CACHE = "ADD_BATCH_TO_CACHE";
+/**
+ * Identifier for the action which takes users from the cache and puts them into the
+ * global state user list.
+ */
+const MOVE_USERS_FROM_CACHE = "MOVE_USERS_FROM_CACHE";
 /**
  * Identifier for the action which sets the IsLoading flag to true.
  */
@@ -32,6 +40,10 @@ const initialState = {
    */
   usersLoaded: 0,
   /**
+   * Users which are ready to be shown if a new batch of users gets loaded.
+   */
+  cachedUsers: [],
+  /**
    * Is a batch of users being loaded
    */
   isLoading: false,
@@ -42,11 +54,19 @@ const initialState = {
 };
 
 /**
- * Action which adds the given batch of users to the global state.
+ * Action which adds the given batch of users to the global state cache.
+ * Note: this action overwrites anything already existing in the cache.
  * @param {any[]} batchOfUsers
  */
-export function setUsersBatch(batchOfUsers) {
-  return { type: ADD_USERS_BATCH, payload: batchOfUsers };
+export function addToCache(batchOfUsers) {
+  return { type: ADD_BATCH_TO_CACHE, payload: batchOfUsers };
+}
+/**
+ * Action which adds the users in the cache into the global state users list.
+ * @param {*} batchOfUsers
+ */
+export function addFromCache(batchOfUsers) {
+  return { type: MOVE_USERS_FROM_CACHE, payload: batchOfUsers };
 }
 
 /**
@@ -72,10 +92,16 @@ export function setLatestError(errorMessage) {
 }
 
 function rootReducer(state = initialState, action) {
-  if (action.type === ADD_USERS_BATCH) {
+  if (action.type === ADD_BATCH_TO_CACHE) {
     return Object.assign({}, state, {
-      users: state.users.concat(action.payload),
+      cachedUsers: action.payload,
+    });
+  }
+  if (action.type === MOVE_USERS_FROM_CACHE) {
+    return Object.assign({}, state, {
+      users: state.users.concat(state.cachedUsers),
       usersLoaded: state.usersLoaded + BATCH_SIZE,
+      cachedUsers: [],
       latestError: null,
     });
   }
