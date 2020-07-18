@@ -1,3 +1,0 @@
-export const GET_USERS_BATCH = "GET_USERS_BATCH";
-export const SET_IS_LOADING_ON = "SET_IS_LOADING_ON";
-export const SET_IS_LOADING_OFF = "SET_IS_LOADING_OFF";
