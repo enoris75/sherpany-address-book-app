@@ -10,14 +10,16 @@ export const UserGridCell = (props) => {
     <div className="card">
       <img
         className="card-img-top"
-        src={props.picture.thumbnail}
+        src={props.picture.medium}
         alt={`Portrait of ${props.first}`}
       />
-      <div className="card-body">
-        <h5 className="card-title">
-          {props.title} {props.first} {props.last}
-        </h5>
-      </div>
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">
+          {props.first} {props.last}
+        </li>
+        <li className="list-group-item">{props.username}</li>
+        <li className="list-group-item">{props.email}</li>
+      </ul>
     </div>
   );
 };

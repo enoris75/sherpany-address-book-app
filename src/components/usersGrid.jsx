@@ -1,24 +1,57 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { UserGridCell } from "./userGridCell";
+import { isBottomOfElementOnScreen } from "../shared/utils";
+import { loadNextBatch } from "../services/userService";
+import { NUMBER_OF_COLUMNS, CATALOG_SIZE } from "../shared/Constants";
 
 /**
  * Function mapping (part of) the global state to props of this component
  * @param {redux state} state
  */
 const mapStateToProps = (state) => {
-  return { users: state.users };
+  return {
+    users: state.users,
+    isLoading: state.isLoading,
+  };
 };
 
 /**
- * Nubmer of the columns in the grid
+ * Component managint the grid of users.
  */
-const NUMBER_OF_COLUMNS = 5;
-
 class usersGrid extends Component {
+  /**
+   * ID of the root element of the component. Used e.g. to track the scrolling
+   */
+  rootElementId = "userGrid";
+  /**
+   * Data structure containing the Users subdivided by row.
+   */
   rowsOfUsers = {};
 
+  componentDidMount() {
+    document.addEventListener("scroll", this.detectScrollToTheBottom);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("scroll", this.detectScrollToTheBottom);
+  }
+
+  detectScrollToTheBottom = () => {
+    const wrappedElement = document.getElementById(this.rootElementId);
+    if (isBottomOfElementOnScreen(wrappedElement)) {
+      console.log(`${this.rootElementId} bottom reached`);
+      if (this.props.users.length < CATALOG_SIZE) {
+        loadNextBatch();
+      }
+    }
+  };
+
+  /**
+   * Split the users into rows whose length is according to the NUMBER_OF_COLUMNS value.
+   */
   splitIntoRows() {
+    this.rowsOfUsers = {};
     for (let index = 0; index < this.props.users.length; index++) {
       let row = Math.floor(index / NUMBER_OF_COLUMNS);
       if (!this.rowsOfUsers[row]) {
@@ -30,11 +63,15 @@ class usersGrid extends Component {
   }
 
   render() {
-    if (!this.props.users.length) {
-      return <div>Loading...</div>;
-    } else {
-      return <div className="container">{this.renderGrid()}</div>;
-    }
+    return (
+      <div id="userGrid" className="container">
+        {this.renderGrid()}
+        {this.props.isLoading && <div>Loading additional users...</div>}
+        {this.props.users.length >= CATALOG_SIZE && (
+          <div>End of users catalog.</div>
+        )}
+      </div>
+    );
   }
 
   renderGrid() {
@@ -48,12 +85,14 @@ class usersGrid extends Component {
     return (
       <div className="row" key={rowKey}>
         {users.map((u, index) => (
-          <div className="col-sm-1" key={index}>
+          <div className="col-sm" key={index}>
             <UserGridCell
               picture={u.picture}
               title={u.name.title}
               first={u.name.first}
               last={u.name.last}
+              username={u.login.username}
+              email={u.email}
             />
           </div>
         ))}
