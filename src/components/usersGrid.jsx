@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import "../styles/userGrid.scss";
 import { UserGridCell } from "./userGridCell";
 import { isBottomOfElementOnScreen } from "../shared/utils";
 import { loadNextBatch } from "../services/userService";
@@ -93,7 +94,7 @@ class usersGrid extends Component {
         {this.renderGrid()}
         {this.props.isLoading && <div>Loading additional users...</div>}
         {this.props.users.length >= CATALOG_SIZE && (
-          <div>End of users catalog.</div>
+          <div className="user-grid-catalog-end">End of users catalog.</div>
         )}
       </div>
     );

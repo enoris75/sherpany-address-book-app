@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/userGridCell.scss";
 
 /**
  * Functional component which generates a cell-view for a single user
@@ -7,7 +8,7 @@ import React from "react";
  */
 export const UserGridCell = (props) => {
   return (
-    <div className="card">
+    <div className="card user-grid-cell">
       <img
         className="card-img-top"
         src={props.picture.medium}
