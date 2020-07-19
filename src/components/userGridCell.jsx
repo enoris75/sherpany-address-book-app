@@ -11,7 +11,7 @@ export const UserGridCell = (props) => {
     <div className="card user-grid-cell">
       <img
         className="card-img-top"
-        src={props.picture.medium}
+        src={props.picture.large}
         alt={`Portrait of ${props.first}`}
       />
       <ul className="list-group list-group-flush">
