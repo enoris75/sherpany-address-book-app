@@ -8,28 +8,28 @@ import { BATCH_SIZE } from "../shared/Constants";
 /**
  * Identifier for the action which adds the a batch of users to the global state cache.
  */
-const ADD_BATCH_TO_CACHE = "ADD_BATCH_TO_CACHE";
+export const ADD_BATCH_TO_CACHE = "ADD_BATCH_TO_CACHE";
 /**
  * Identifier for the action which takes users from the cache and puts them into the
  * global state user list.
  */
-const MOVE_USERS_FROM_CACHE = "MOVE_USERS_FROM_CACHE";
+export const MOVE_USERS_FROM_CACHE = "MOVE_USERS_FROM_CACHE";
 /**
  * Identifier for the action which sets the IsLoading flag to true.
  */
-const SET_IS_LOADING_ON = "SET_IS_LOADING_ON";
+export const SET_IS_LOADING_ON = "SET_IS_LOADING_ON";
 /**
  * Identifier for the action which sets the IsLoading flag to false.
  */
-const SET_IS_LOADING_OFF = "SET_IS_LOADING_OFF";
+export const SET_IS_LOADING_OFF = "SET_IS_LOADING_OFF";
 /**
  * Identifier for the action which sets the latest error.
  */
-const SET_LATEST_ERROR = "SET_LATEST_ERROR";
+export const SET_LATEST_ERROR = "SET_LATEST_ERROR";
 /**
  * Identifier for the action which sets the filter.
  */
-const SET_FILTER = "SET_FILTER";
+export const SET_FILTER = "SET_FILTER";
 
 /**
  * Initial state of the global state.
@@ -73,8 +73,8 @@ export function addToCache(batchOfUsers) {
  * Action which adds the users in the cache into the global state users list.
  * @param {*} batchOfUsers
  */
-export function addFromCache(batchOfUsers) {
-  return { type: MOVE_USERS_FROM_CACHE, payload: batchOfUsers };
+export function addFromCache() {
+  return { type: MOVE_USERS_FROM_CACHE };
 }
 /**
  * Action which sets the IsLoading flag to on.
@@ -89,7 +89,7 @@ export function setIsLoadingOff() {
   return { type: SET_IS_LOADING_OFF };
 }
 /**
- * Action which sets Latest Error message in the global state.
+ * Action which sets latest error message in the global state.
  * @param {string} errorMessage
  */
 export function setLatestError(errorMessage) {
@@ -103,7 +103,7 @@ export function setFilter(filter) {
   return { type: SET_FILTER, payload: filter };
 }
 
-function rootReducer(state = initialState, action) {
+export function rootReducer(state = initialState, action) {
   if (action.type === ADD_BATCH_TO_CACHE) {
     return Object.assign({}, state, {
       cachedUsers: action.payload,
