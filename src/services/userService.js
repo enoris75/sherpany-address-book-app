@@ -49,7 +49,9 @@ export function loadNextBatch() {
   // load twice as many and put the second half in the cache.
   let numberOfResults = isCacheFull ? BATCH_SIZE : 2 * BATCH_SIZE;
 
-  let url = `${RANDOMUSER_ME_BASE_URL}?page=${currentPage}&results=${numberOfResults}&seed=${SEED}`;
+  let nationalities = currentState.nationalityFilter.join(",");
+
+  let url = `${RANDOMUSER_ME_BASE_URL}?page=${currentPage}&results=${numberOfResults}&seed=${SEED}&nat=${nationalities}`;
 
   store.dispatch(setIsLoadingOn("message"));
 

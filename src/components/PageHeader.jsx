@@ -35,13 +35,17 @@ class PageHeader extends Component {
     this.currentPage = props.page || pages.usersGrid;
   }
 
-  handleChange(event) {
+  /**
+   * Manages the set filter changed event.
+   * @param {*} event
+   */
+  handleFilterChange(event) {
     event.preventDefault();
     this.props.setFilter(event.target.value);
   }
 
   /**
-   * Render the navigation button depending on the page
+   * Renders the navigation button depending on the page.
    */
   renderNavigationButton() {
     if (this.props.page === pages.settings) {
@@ -105,7 +109,7 @@ class PageHeader extends Component {
               className="form-control mr-sm-2"
               type="search"
               placeholder="Search"
-              onChange={(event) => this.handleChange(event)}
+              onChange={(event) => this.handleFilterChange(event)}
             />
             <label htmlFor="filter">Filter by fist and last name</label>
           </div>

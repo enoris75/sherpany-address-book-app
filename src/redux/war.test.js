@@ -5,6 +5,7 @@ import {
   setIsLoadingOff,
   setLatestError,
   setFilter,
+  setNationalityFilter,
 } from "./war";
 import {
   ADD_BATCH_TO_CACHE,
@@ -13,6 +14,7 @@ import {
   SET_IS_LOADING_OFF,
   SET_LATEST_ERROR,
   SET_FILTER,
+  SET_NATIONALITY_FILTER,
 } from "./war";
 import { rootReducer } from "./war";
 import { BATCH_SIZE } from "../shared/Constants";
@@ -27,6 +29,7 @@ describe("Test reducer", () => {
       isLoading: false,
       latestError: null,
       filter: null,
+      nationalityFilter: ["CH", "ES", "FR", "GB"],
     };
     expect(actualResults).toEqual(expectedResults);
   });
@@ -269,6 +272,33 @@ describe("Test reducer", () => {
     };
     expect(actualResults).toEqual(expectedState);
   });
+
+  it("should set the nationalities to CH", () => {
+    const filter = "I am a filter";
+    const preState = {
+      users: [],
+      usersLoaded: 0,
+      cachedUsers: [],
+      isLoading: false,
+      latestError: null,
+      filter: null,
+      nationalityFilter: ["CH", "ES", "FR", "GB"],
+    };
+    const actualResults = rootReducer(preState, {
+      type: SET_NATIONALITY_FILTER,
+      payload: ["CH"],
+    });
+    const expectedState = {
+      users: [],
+      usersLoaded: 0,
+      cachedUsers: [],
+      isLoading: false,
+      latestError: null,
+      filter: null,
+      nationalityFilter: ["CH"],
+    };
+    expect(actualResults).toEqual(expectedState);
+  });
 });
 
 describe("Test actions", () => {
@@ -320,7 +350,7 @@ describe("Test actions", () => {
     expect(actualAction).toEqual(expectedAction);
   });
 
-  it("should create an action to set latest Error message in the global state", () => {
+  it("should create an action to set filter", () => {
     const filter = "I am a filter";
     const expectedAction = {
       type: SET_FILTER,
@@ -328,6 +358,17 @@ describe("Test actions", () => {
     };
 
     const actualAction = setFilter(filter);
+    expect(actualAction).toEqual(expectedAction);
+  });
+
+  it("should create an action to set nationality filter", () => {
+    const nationalities = ["CH", "FR"];
+    const expectedAction = {
+      type: SET_NATIONALITY_FILTER,
+      payload: nationalities,
+    };
+
+    const actualAction = setNationalityFilter(nationalities);
     expect(actualAction).toEqual(expectedAction);
   });
 });

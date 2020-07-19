@@ -30,6 +30,10 @@ export const SET_LATEST_ERROR = "SET_LATEST_ERROR";
  * Identifier for the action which sets the filter.
  */
 export const SET_FILTER = "SET_FILTER";
+/**
+ * Identifier for the action which sets the nationality filter.
+ */
+export const SET_NATIONALITY_FILTER = "SET_NATIONALITY_FILTER";
 
 /**
  * Initial state of the global state.
@@ -59,6 +63,10 @@ const initialState = {
    * Filter applied to first + last name of the users.
    */
   filter: null,
+  /**
+   * Filter selecting the nationalities the users are from.
+   */
+  nationalityFilter: ["CH", "ES", "FR", "GB"],
 };
 
 /**
@@ -102,6 +110,13 @@ export function setLatestError(errorMessage) {
 export function setFilter(filter) {
   return { type: SET_FILTER, payload: filter };
 }
+/**
+ * Action which sets the nationality filter.
+ * @param {string[]} nationalities
+ */
+export function setNationalityFilter(nationalities) {
+  return { type: SET_NATIONALITY_FILTER, payload: nationalities };
+}
 
 export function rootReducer(state = initialState, action) {
   if (action.type === ADD_BATCH_TO_CACHE) {
@@ -135,6 +150,11 @@ export function rootReducer(state = initialState, action) {
   if (action.type === SET_FILTER) {
     return Object.assign({}, state, {
       filter: action.payload,
+    });
+  }
+  if (action.type === SET_NATIONALITY_FILTER) {
+    return Object.assign({}, state, {
+      nationalityFilter: action.payload,
     });
   }
 

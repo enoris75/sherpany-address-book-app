@@ -6,6 +6,7 @@ import "./styles/App.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import Grid from "./components/UsersGrid";
 import { Header, pages } from "./components/PageHeader";
+import { Settings } from "./components/SettingsPage";
 import { loadNextBatch } from "./services/UserService";
 
 // Load the first batch of users as the app starts
@@ -30,7 +31,9 @@ function App() {
             <div className="app-header">
               <Header page={pages.settings} />
             </div>
-            <div className="app-content">Add settings here</div>
+            <div className="app-content">
+              <Settings />
+            </div>
           </Route>
         </Switch>
       </Router>
