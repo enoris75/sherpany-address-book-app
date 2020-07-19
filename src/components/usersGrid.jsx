@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "../styles/userGrid.scss";
-import { UserGridCell } from "./userGridCell";
-import { isBottomOfElementOnScreen } from "../shared/utils";
-import { loadNextBatch } from "../services/userService";
+import "../styles/UserGrid.scss";
+import { UserGridCell } from "./UserGridCell";
+import { isBottomOfElementOnScreen } from "../shared/Utils";
+import { loadNextBatch } from "../services/UserService";
 import { NUMBER_OF_COLUMNS, CATALOG_SIZE } from "../shared/Constants";
 
 /**
@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
 /**
  * Component managint the grid of users.
  */
-class usersGrid extends Component {
+class UsersGrid extends Component {
   /**
    * ID of the root element of the component. Used e.g. to track the scrolling
    */
@@ -148,6 +148,6 @@ class usersGrid extends Component {
   }
 }
 
-const Grid = connect(mapStateToProps)(usersGrid);
+const Grid = connect(mapStateToProps)(UsersGrid);
 
 export default Grid;

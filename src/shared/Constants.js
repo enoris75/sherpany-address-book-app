@@ -5,7 +5,7 @@ export const BATCH_SIZE = 50;
 /**
  * Size of the users catalog (when so many users have been loaded no more will).
  */
-export const CATALOG_SIZE = 3 * BATCH_SIZE;
+export const CATALOG_SIZE = 20 * BATCH_SIZE;
 /**
  * Seed for the generation of the users (on randomuser.me service).
  * We're passing a seed to ensure that randomuser.me generates batches

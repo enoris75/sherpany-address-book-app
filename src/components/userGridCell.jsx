@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/userGridCell.scss";
+import "../styles/UserGridCell.scss";
 
 /**
  * Functional component which generates a cell-view for a single user

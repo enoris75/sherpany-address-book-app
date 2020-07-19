@@ -4,9 +4,9 @@ import { store } from "./redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/App.scss";
 import "bootstrap/dist/css/bootstrap.css";
-import Grid from "./components/usersGrid";
+import Grid from "./components/UsersGrid";
 import { Header, pages } from "./components/PageHeader";
-import { loadNextBatch } from "./services/userService";
+import { loadNextBatch } from "./services/UserService";
 
 // Load the first batch of users as the app starts
 loadNextBatch();
