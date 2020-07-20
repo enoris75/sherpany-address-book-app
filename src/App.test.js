@@ -1,9 +1,21 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import configureStore from "redux-mock-store";
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+it("renders without crashing", () => {
+  const mockStore = configureStore();
+  const initialState = {
+    users: [],
+    usersLoaded: 0,
+    cachedUsers: [],
+    isLoading: false,
+    latestError: null,
+    filter: null,
+  };
+  const store = mockStore(initialState);
+
+  const div = document.createElement("div");
+  ReactDOM.render(<App />, div);
+  ReactDOM.unmountComponentAtNode(div);
 });

@@ -1,0 +1,16 @@
+div#userGrid {
+  // height: calc(100vh-300);
+  height: calc(100vh);
+  width: 100%;
+  margin-left: 105px;
+}
+.user-grid-catalog-end {
+  border-top-width: 1px;
+  border-top-color: darkgray;
+  border-top-style: dashed;
+  padding-top: 1em;
+  margin-top: 1em;
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 2em;
+}
