@@ -4,7 +4,7 @@ import { store } from "./redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/App.scss";
 import "bootstrap/dist/css/bootstrap.css";
-import Grid from "./components/UsersGrid";
+import { Grid } from "./components/UsersGrid";
 import { Header, pages } from "./components/PageHeader";
 import { Settings } from "./components/SettingsPage";
 import { loadNextBatch } from "./services/UserService";
