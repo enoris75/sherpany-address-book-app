@@ -22,11 +22,15 @@ export const UserGridCell = (props) => {
           alt={`Portrait of ${props.user.name.first}`}
         />
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">
+          <li className="list-group-item user-property-name">
             {props.user.name.first} {props.user.name.last}
           </li>
-          <li className="list-group-item">{props.user.login.username}</li>
-          <li className="list-group-item">{props.user.email}</li>
+          <li className="list-group-item user-property-username">
+            {props.user.login.username}
+          </li>
+          <li className="list-group-item user-property-email">
+            {props.user.email}
+          </li>
         </ul>
       </div>
     </>
