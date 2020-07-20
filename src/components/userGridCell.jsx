@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { UserOverlay } from "./UserOverlay";
 import "../styles/UserGridCell.scss";
 
 /**
@@ -7,20 +8,27 @@ import "../styles/UserGridCell.scss";
  * @param {*} props
  */
 export const UserGridCell = (props) => {
+  const [showOverlay, setShowOverlay] = useState(false);
+
   return (
-    <div className="card user-grid-cell">
-      <img
-        className="card-img-top"
-        src={props.picture.large}
-        alt={`Portrait of ${props.first}`}
-      />
-      <ul className="list-group list-group-flush">
-        <li className="list-group-item">
-          {props.first} {props.last}
-        </li>
-        <li className="list-group-item">{props.username}</li>
-        <li className="list-group-item">{props.email}</li>
-      </ul>
-    </div>
+    <>
+      {showOverlay && (
+        <UserOverlay user={props.user} callback={() => setShowOverlay(false)} />
+      )}
+      <div className="card user-grid-cell" onClick={() => setShowOverlay(true)}>
+        <img
+          className="card-img-top"
+          src={props.user.picture.large}
+          alt={`Portrait of ${props.user.name.first}`}
+        />
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            {props.user.name.first} {props.user.name.last}
+          </li>
+          <li className="list-group-item">{props.user.login.username}</li>
+          <li className="list-group-item">{props.user.email}</li>
+        </ul>
+      </div>
+    </>
   );
 };

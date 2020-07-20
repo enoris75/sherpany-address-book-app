@@ -125,14 +125,7 @@ class UsersGrid extends Component {
         let u = users[index];
         cells.push(
           <div className="col-sm" key={index}>
-            <UserGridCell
-              picture={u.picture}
-              title={u.name.title}
-              first={u.name.first}
-              last={u.name.last}
-              username={u.login.username}
-              email={u.email}
-            />
+            <UserGridCell user={u} />
           </div>
         );
       } else {
