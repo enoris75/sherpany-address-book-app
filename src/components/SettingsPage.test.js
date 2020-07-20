@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Settings } from "./SettingsPage";
+import * as myRedux from "../redux";
+
 import configureStore from "redux-mock-store";
 
 const mockStore = configureStore();
@@ -24,5 +26,24 @@ it("renders without crashing", () => {
     </Provider>,
     div
   );
+  ReactDOM.unmountComponentAtNode(div);
+});
+
+it("verify there are checkboxes", () => {
+  const div = document.createElement("div");
+  ReactDOM.render(
+    <Provider store={store}>
+      <Settings />
+    </Provider>,
+    div
+  );
+  const checkBoxes = div.getElementsByTagName("input");
+  // Verify there are 4 input tags
+  expect(checkBoxes.length).toBe(4);
+  // Verify that the input tags are all checkboxes
+  for (let index = 0; index < checkBoxes.length; index++) {
+    expect(checkBoxes[index].getAttribute("type")).toBe("checkbox");
+  }
+
   ReactDOM.unmountComponentAtNode(div);
 });
