@@ -80,12 +80,14 @@ it("load the very first batch", async () => {
 
 it("load a second batch, users in the cache", async () => {
   const initialState = store.getState();
+  const firstCachedUser = initialState.cachedUsers[0];
+  const initiallyLoadedUsers = initialState.users.length;
   await loadNextBatch();
 
   const finalState = store.getState();
   expect(finalState.cachedUsers.length).toBeGreaterThan(0);
   expect(finalState.users.length).toBeGreaterThan(initialState.users.length);
   expect(finalState.usersLoaded).toBe(initialState.usersLoaded + BATCH_SIZE);
-  expect(finalState.users[0]).toBe(initialState.users[0]);
+  expect(finalState.users[initiallyLoadedUsers]).toBe(firstCachedUser);
   expect(finalState.cachedUsers[0]).toBe(testUser1);
 });
