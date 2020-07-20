@@ -1,8 +1,19 @@
 div#userGrid {
-  // height: calc(100vh-300);
-  height: calc(100vh);
   width: 100%;
   margin-left: 105px;
+  #spinners {
+    z-index: 111;
+    position: fixed;
+    bottom: 50px;
+    .text {
+      font-weight: bolder;
+      position: absolute;
+      padding-left: 0em;
+      top: 4px;
+      left: 6em;
+      color: white;
+    }
+  }
 }
 .user-grid-catalog-end {
   border-top-width: 1px;

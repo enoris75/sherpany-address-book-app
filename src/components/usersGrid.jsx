@@ -92,7 +92,35 @@ class UsersGrid extends Component {
     return (
       <div id="userGrid" className="container">
         {this.renderGrid()}
-        {this.props.isLoading && <div>Loading additional users...</div>}
+        {this.props.isLoading && (
+          <div id="spinners">
+            <div className="spinner-grow text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-secondary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-success" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-danger" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-warning" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-info" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-light" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="spinner-grow text-dark" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+            <div className="text">Loading...</div>
+          </div>
+        )}
         {this.props.users.length >= CATALOG_SIZE && (
           <div className="user-grid-catalog-end">End of users catalog.</div>
         )}
