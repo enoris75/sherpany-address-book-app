@@ -141,6 +141,4 @@ class UsersGrid extends Component {
   }
 }
 
-const Grid = connect(mapStateToProps)(UsersGrid);
-
-export default Grid;
+export const Grid = connect(mapStateToProps)(UsersGrid);
