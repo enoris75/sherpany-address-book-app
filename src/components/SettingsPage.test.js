@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Settings } from "./SettingsPage";
-import * as myRedux from "../redux";
-
 import configureStore from "redux-mock-store";
 
 const mockStore = configureStore();
