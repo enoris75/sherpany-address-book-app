@@ -59,15 +59,17 @@ export async function loadNextBatch() {
     // Add the users into the global state user list immediately
     // while additional users are loaded from the server
     store.dispatch(addFromCache());
+    let currentState = store.getState();
+    console.log(currentState);
   }
 
   try {
     const response = await fetch(url);
     let json = await response.json();
+
     if (isCacheFull) {
-      // Move the users in the cache in to the list.
-      store.dispatch(addFromCache());
-      // Fill the cache with the just fetched users
+      // Note: users have already been added to the user list:
+      // fill the cache with the just fetched users
       store.dispatch(addToCache(json.results));
     } else {
       // The cache is empty, hence we downloaded twice as many users
