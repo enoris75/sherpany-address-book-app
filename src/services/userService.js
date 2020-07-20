@@ -18,7 +18,7 @@ import {
  * Load the next batch of users. If some loading is alraedy in progress then
  * the function does nothing.
  */
-export function loadNextBatch() {
+export async function loadNextBatch() {
   let currentState = store.getState();
   if (currentState.isLoading) {
     // Loading is already in progress, return.
@@ -55,77 +55,38 @@ export function loadNextBatch() {
 
   store.dispatch(setIsLoadingOn("message"));
 
-  fetch(url)
-    .then(
-      async (response) => {
-        let json = await response.json();
-        /* The json file with the payload from the randomsuer.me request is strucured as follows:
-            info {
-                page: number
-                results: number;
-                seed: string
-                version: string
-            },
-            results: [ randomuser.me user]
-
-            the relevant fields of a user from randomuser.me are
-            {
-                name: {
-                    title: string,
-                    first: string,
-                    last: string
-                },
-                picture: {
-                    large: string,
-                    medium: string,
-                    thumbnail: string
-                },
-                login: {
-                    username: string
-                },
-                email: string,
-                location: {
-                    street: string,
-                    city: string,
-                    state: string,
-                    postcode: number
-                },
-                phone: string,
-                cell: string
-            }
-        */
-        if (isCacheFull) {
-          // Move the users in the cache in to the list.
-          store.dispatch(addFromCache());
-          // Fill the cache with the just fetched users
-          store.dispatch(addToCache(json.results));
-        } else {
-          // The cache is empty, hence we downloaded twice as many users
-          let users = json.results;
-          // We should have exactly twice the size of a normal batch, but lets
-          // take the size from the results themselves, just to be sure.
-          let numberOfResults = users.length;
-          let firstHalf = users.slice(0, numberOfResults / 2);
-          let secondHalf = users.slice(numberOfResults / 2);
-          // Add the first half of results to the cache.
-          store.dispatch(addToCache(firstHalf));
-          // Move the users from the cache to the users list
-          store.dispatch(addFromCache());
-          // Add the second half of results to the cache.
-          store.dispatch(addToCache(secondHalf));
-        }
-      },
-      (error) => {
-        store.dispatch(setLatestError(`Error loading users from url: ${url}`));
-      }
-    )
-    .finally(() => {
-      store.dispatch(setIsLoadingOff("message"));
-    });
-
   if (isCacheFull) {
     // Add the users into the global state user list immediately
     // while additional users are loaded from the server
     store.dispatch(addFromCache());
+  }
+
+  try {
+    const response = await fetch(url);
+    let json = await response.json();
+    if (isCacheFull) {
+      // Move the users in the cache in to the list.
+      store.dispatch(addFromCache());
+      // Fill the cache with the just fetched users
+      store.dispatch(addToCache(json.results));
+    } else {
+      // The cache is empty, hence we downloaded twice as many users
+      let users = json.results;
+      // We should have exactly twice the size of a normal batch, but lets
+      // take the size from the results themselves, just to be sure.
+      let numberOfResults = users.length;
+      let firstHalf = users.slice(0, numberOfResults / 2);
+      let secondHalf = users.slice(numberOfResults / 2);
+      // Add the first half of results to the cache.
+      store.dispatch(addToCache(firstHalf));
+      // Move the users from the cache to the users list
+      store.dispatch(addFromCache());
+      // Add the second half of results to the cache.
+      store.dispatch(addToCache(secondHalf));
+    }
+  } catch (error) {
+    store.dispatch(setLatestError(`Error loading users from url: ${url}`));
+  } finally {
+    store.dispatch(setIsLoadingOff("message"));
   }
 }
