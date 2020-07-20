@@ -1,6 +1,5 @@
 import { loadNextBatch } from "./UserService";
-import { createStore } from "redux";
-import { store, rootReducer, addToCache } from "../redux";
+import { store } from "../redux";
 import { BATCH_SIZE } from "../shared/Constants";
 
 const testUser1 = {
